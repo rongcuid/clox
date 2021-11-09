@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "debug.h"
+#include "compiler.h"
 
 struct vm vm;
 
@@ -63,10 +64,9 @@ void init_vm() {
 void free_vm() {}
 
 
-enum interpret_result interpret(struct chunk *chunk) {
-  vm.chunk = chunk;
-  vm.ip = vm.chunk->code;
-  return run();
+enum interpret_result interpret(const char *source) {
+  compile(source);
+  return INTERPRET_OK;
 }
 
 void push(value_t value) {
