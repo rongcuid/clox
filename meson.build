@@ -7,6 +7,7 @@ exe = executable('clox', [
   'chunk.c',
   'memory.c',
   'debug.c',
+  'value.c',
   ],
   install : true)
 
