@@ -107,17 +107,71 @@ static struct token number() {
 }
 
 static bool is_alpha(char c) {
-  return (c >= 'a' && c <= 'z')
-    || (c >= 'A' && c <= 'Z')
-    || c == '_';
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+static enum token_type check_keyword(int start, int length, const char *rest,
+                                     enum token_type type) {
+  if (scanner.current - scanner.start == start + length &&
+      memcmp(scanner.start + start, rest, length) == 0) {
+    return type;
+  }
+  return TOKEN_IDENTIFIER;
 }
 
 static enum token_type identifier_type() {
+  switch (scanner.start[0]) {
+  case 'a':
+    return check_keyword(1, 2, "nd", TOKEN_AND);
+  case 'c':
+    return check_keyword(1, 4, "lass", TOKEN_CLASS);
+  case 'e':
+    return check_keyword(1, 3, "lse", TOKEN_ELSE);
+  case 'i':
+    return check_keyword(1, 1, "f", TOKEN_IF);
+  case 'n':
+    return check_keyword(1, 2, "il", TOKEN_NIL);
+  case 'o':
+    return check_keyword(1, 1, "r", TOKEN_OR);
+  case 'p':
+    return check_keyword(1, 4, "rint", TOKEN_PRINT);
+  case 'r':
+    return check_keyword(1, 5, "eturn", TOKEN_RETURN);
+  case 's':
+    return check_keyword(1, 4, "uper", TOKEN_SUPER);
+  case 'v':
+    return check_keyword(1, 2, "ar", TOKEN_VAR);
+  case 'w':
+    return check_keyword(1, 4, "hile", TOKEN_WHILE);
+  case 'f':
+    if (scanner.current - scanner.start > 1) {
+      switch (scanner.start[1]) {
+      case 'a':
+        return check_keyword(2, 3, "lse", TOKEN_FALSE);
+      case 'o':
+        return check_keyword(2, 1, "r", TOKEN_FOR);
+      case 'u':
+        return check_keyword(2, 1, "n", TOKEN_FUN);
+      }
+    }
+    break;
+  case 't':
+    if (scanner.current - scanner.start > 1) {
+      switch (scanner.start[1]) {
+      case 'h':
+        return check_keyword(2, 2, "is", TOKEN_THIS);
+      case 'r':
+        return check_keyword(2, 2, "ue", TOKEN_TRUE);
+      }
+    }
+    break;
+  }
   return TOKEN_IDENTIFIER;
 }
 
 static struct token identifier() {
-  while (is_alpha(peek()) || is_digit(peek())) advance();
+  while (is_alpha(peek()) || is_digit(peek()))
+    advance();
   return make_token(identifier_type());
 }
 
@@ -137,7 +191,7 @@ struct token scan_token() {
     return make_token(TOKEN_EOF);
 
   char c = advance();
-  if (is_alpha(c)) 
+  if (is_alpha(c))
     return identifier();
   if (is_digit(c))
     return number();
