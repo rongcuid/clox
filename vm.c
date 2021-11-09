@@ -13,6 +13,12 @@ static void reset_stack() {
 static enum interpret_result run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+#define BINARY_OP(op) \
+  do { \
+    value_t b = pop(); \
+    value_t a = pop(); \
+    push(a op b); \
+  } while (false)
 
   for (;;) {
 #ifdef DEBUG_TRACE_EXECUTION
@@ -32,9 +38,12 @@ static enum interpret_result run() {
       push(constant);
       break;
     }
-    case OP_NEGATE: {
-      push(-pop()); break;
-    }
+    case OP_NEGATE: push(-pop()); break;
+    
+    case OP_ADD: BINARY_OP(+); break;
+    case OP_SUBTRACT: BINARY_OP(-); break;
+    case OP_MULTIPLY: BINARY_OP(*); break;
+    case OP_DIVIDE: BINARY_OP(/); break;
     case OP_RETURN:
       print_value(pop());
       printf("\n");
@@ -44,6 +53,7 @@ static enum interpret_result run() {
 
 #undef READ_BYTE
 #undef READ_CONSTANT
+#undef BINARY_OP
 }
 
 void init_vm() {
