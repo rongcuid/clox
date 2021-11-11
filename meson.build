@@ -11,6 +11,7 @@ exe = executable('clox', [
   'vm.c',
   'compiler.c',
   'scanner.c',
+  'object.c',
   ],
   install : true)
 

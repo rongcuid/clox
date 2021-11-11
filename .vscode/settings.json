@@ -3,6 +3,17 @@
     "files.associations": {
         "*.rkt": "racket",
         "type_traits": "c",
-        "random": "c"
+        "random": "c",
+        "optional": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp",
+        "string": "c",
+        "scanner.h": "c"
     }
 }

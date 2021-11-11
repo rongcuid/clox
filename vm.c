@@ -5,6 +5,8 @@
 
 #include "compiler.h"
 #include "debug.h"
+#include "memory.h"
+#include "object.h"
 
 struct vm vm;
 
@@ -27,6 +29,20 @@ static void runtime_error(const char *format, ...) {
 
 static bool is_falsey(value_t value) {
   return IS_NIL(value) || (IS_BOOL(value) && !AS_BOOL(value));
+}
+
+static void concatenate() {
+  struct obj_string *b = AS_STRING(pop());
+  struct obj_string *a = AS_STRING(pop());
+
+  int length = a->length + b->length;
+  char *chars = ALLOCATE(char, length + 1);
+  memcpy(chars, a->chars, a->length);
+  memcpy(chars + a->length, b->chars, b->length);
+  chars[length] = '\0';
+
+  struct obj_string *result = take_string(chars, length);
+  push(OBJ_VAL(result));
 }
 
 static enum interpret_result run() {
@@ -90,9 +106,19 @@ static enum interpret_result run() {
       push(NUMBER_VAL(-AS_NUMBER(pop())));
       break;
 
-    case OP_ADD:
-      BINARY_OP(NUMBER_VAL, +);
+    case OP_ADD: {
+      if (IS_STRING(peek(0)) && IS_STRING(peek(1))) {
+        concatenate();
+      } else if (IS_NUMBER(peek(0)) && IS_NUMBER(peek(1))) {
+        double b = AS_NUMBER(pop());
+        double a = AS_NUMBER(pop());
+        push(NUMBER_VAL(a + b));
+      } else {
+        runtime_error("Operands must be two numbers or two strings.");
+        return INTERPRET_RUNTIME_ERROR;
+      }
       break;
+    }
     case OP_SUBTRACT:
       BINARY_OP(NUMBER_VAL, -);
       break;
