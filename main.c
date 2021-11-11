@@ -8,8 +8,8 @@
 #include "debug.h"
 #include "vm.h"
 
-static char* read_file(const char* path) {
-  FILE* file = fopen(path, "rb");
+static char *read_file(const char *path) {
+  FILE *file = fopen(path, "rb");
   if (file == NULL) {
     fprintf(stderr, "Could not open file \"%s\".\n", path);
     exit(74);
@@ -19,7 +19,7 @@ static char* read_file(const char* path) {
   size_t file_size = ftell(file);
   rewind(file);
 
-  char *buffer = (char*) malloc(file_size + 1);
+  char *buffer = (char *)malloc(file_size + 1);
   if (buffer == NULL) {
     fprintf(stderr, "Not enough memory to read \"%s\".", path);
     exit(74);
@@ -49,13 +49,15 @@ static void repl() {
   }
 }
 
-static void run_file(const char* path) {
+static void run_file(const char *path) {
   char *source = read_file(path);
   enum interpret_result result = interpret(source);
   free(source);
 
-  if (result == INTERPRET_COMPILE_ERROR) exit(65);
-  if (result == INTERPRET_RUNTIME_ERROR) exit(70);
+  if (result == INTERPRET_COMPILE_ERROR)
+    exit(65);
+  if (result == INTERPRET_RUNTIME_ERROR)
+    exit(70);
 }
 
 int main(int argc, char **argv) {

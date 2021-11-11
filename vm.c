@@ -31,11 +31,11 @@ static enum interpret_result run() {
 #define BINARY_OP(value_type, op)                                              \
   do {                                                                         \
     if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) {                          \
-      runtime_error("Operands must be numbers.");                               \
+      runtime_error("Operands must be numbers.");                              \
       return INTERPRET_RUNTIME_ERROR;                                          \
     }                                                                          \
-    double b = AS_NUMBER(pop());                                              \
-    double a = AS_NUMBER(pop());                                              \
+    double b = AS_NUMBER(pop());                                               \
+    double a = AS_NUMBER(pop());                                               \
     push(value_type(a op b));                                                  \
   } while (false)
 
@@ -57,6 +57,15 @@ static enum interpret_result run() {
       push(constant);
       break;
     }
+    case OP_NIL:
+      push(NIL_VAL);
+      break;
+    case OP_TRUE:
+      push(BOOL_VAL(true));
+      break;
+    case OP_FALSE:
+      push(BOOL_VAL(false));
+      break;
     case OP_NEGATE:
       if (!IS_NUMBER(peek(0))) {
         runtime_error("Operand must be a number.");
