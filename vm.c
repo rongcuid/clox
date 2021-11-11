@@ -25,6 +25,10 @@ static void runtime_error(const char *format, ...) {
   reset_stack();
 }
 
+static bool is_falsey(value_t value) {
+  return IS_NIL(value) || (IS_BOOL(value) && !AS_BOOL(value));
+}
+
 static enum interpret_result run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
@@ -85,6 +89,9 @@ static enum interpret_result run() {
       break;
     case OP_DIVIDE:
       BINARY_OP(NUMBER_VAL, /);
+      break;
+    case OP_NOT:
+      push(BOOL_VAL(is_falsey(pop())));
       break;
     case OP_RETURN:
       print_value(pop());

@@ -15,6 +15,7 @@ enum opcode {
   OP_SUBTRACT,
   OP_MULTIPLY,
   OP_DIVIDE,
+  OP_NOT,
   OP_RETURN,
 };
 
