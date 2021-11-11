@@ -2,7 +2,8 @@
 #define __COMPILER_H__
 
 #include "common.h"
+#include "vm.h"
 
-void compile(const char *source);
+bool compile(const char *source, struct chunk *chunk);
 
 #endif // __COMPILER_H__
