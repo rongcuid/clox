@@ -195,7 +195,7 @@ static struct parse_rule *get_rule(enum token_type type) {
 
 static void number() {
   double value = strtod(parser.previous.start, NULL);
-  emit_constant(value);
+  emit_constant(NUMBER_VAL(value));
 }
 
 static void grouping() {

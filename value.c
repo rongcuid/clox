@@ -27,4 +27,4 @@ void free_value_array(struct value_array *array) {
   init_value_array(array);
 }
 
-void print_value(value_t value) { printf("%g", value); }
+void print_value(value_t value) { printf("%g", AS_NUMBER(value)); }

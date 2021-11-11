@@ -1,3 +1,8 @@
 {
-    "mesonbuild.configureOnOpen": true
+    "mesonbuild.configureOnOpen": true,
+    "files.associations": {
+        "*.rkt": "racket",
+        "type_traits": "c",
+        "random": "c"
+    }
 }
