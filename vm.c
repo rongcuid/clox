@@ -2,6 +2,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "compiler.h"
 #include "debug.h"
@@ -143,9 +144,12 @@ static enum interpret_result run() {
 #undef BINARY_OP
 }
 
-void init_vm() { reset_stack(); }
+void init_vm() {
+  reset_stack();
+  vm.objects = NULL;
+}
 
-void free_vm() {}
+void free_vm() { free_objects(); }
 
 enum interpret_result interpret(const char *source) {
   struct chunk chunk;

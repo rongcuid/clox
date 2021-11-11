@@ -11,7 +11,10 @@ struct vm {
   uint8_t *ip;
   value_t stack[STACK_MAX];
   value_t *stack_top;
+  struct obj *objects;
 };
+
+extern struct vm vm;
 
 enum interpret_result {
   INTERPRET_OK,

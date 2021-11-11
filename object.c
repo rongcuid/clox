@@ -13,6 +13,8 @@
 static void *allocate_object(size_t size, enum obj_type type) {
   struct obj *object = (struct obj *)reallocate(NULL, 0, size);
   object->type = type;
+  object->next = vm.objects;
+  vm.objects = object;
   return object;
 }
 
