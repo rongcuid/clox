@@ -4,6 +4,21 @@
 
 #include "memory.h"
 
+bool values_equal(value_t a, value_t b) {
+  if (a.type != b.type)
+    return false;
+  switch (a.type) {
+  case VAL_BOOL:
+    return AS_BOOL(a) == AS_BOOL(b);
+  case VAL_NIL:
+    return true;
+  case VAL_NUMBER:
+    return AS_NUMBER(a) == AS_NUMBER(b);
+  default:
+    return false;
+  }
+}
+
 void init_value_array(struct value_array *array) {
   array->values = NULL;
   array->capacity = 0;

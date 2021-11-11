@@ -70,6 +70,18 @@ static enum interpret_result run() {
     case OP_FALSE:
       push(BOOL_VAL(false));
       break;
+    case OP_EQUAL: {
+      value_t b = pop();
+      value_t a = pop();
+      push(BOOL_VAL(values_equal(a, b)));
+      break;
+    }
+    case OP_GREATER:
+      BINARY_OP(BOOL_VAL, >);
+      break;
+    case OP_LESS:
+      BINARY_OP(BOOL_VAL, <);
+      break;
     case OP_NEGATE:
       if (!IS_NUMBER(peek(0))) {
         runtime_error("Operand must be a number.");

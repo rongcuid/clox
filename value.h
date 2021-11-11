@@ -34,6 +34,8 @@ struct value_array {
 #define NIL_VAL ((value_t){VAL_NIL, {.number = 0}})
 #define NUMBER_VAL(value) ((value_t){VAL_NUMBER, {.number = value}})
 
+bool values_equal(value_t a, value_t b);
+
 void init_value_array(struct value_array *array);
 void write_value_array(struct value_array *array, value_t value);
 void free_value_array(struct value_array *array);

@@ -44,6 +44,12 @@ int disassemble_instruction(struct chunk *chunk, int offset) {
     return simple_instruction("OP_TRUE", offset);
   case OP_FALSE:
     return simple_instruction("OP_FALSE", offset);
+  case OP_EQUAL:
+    return simple_instruction("OP_EQUAL", offset);
+  case OP_GREATER:
+    return simple_instruction("OP_GREATER", offset);
+  case OP_LESS:
+    return simple_instruction("OP_LESS", offset);
   case OP_NEGATE:
     return simple_instruction("OP_NEGATE", offset);
   case OP_ADD:
