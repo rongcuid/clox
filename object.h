@@ -25,6 +25,7 @@ struct obj_string {
   struct obj obj;
   int length;
   char *chars;
+  uint32_t hash;
 };
 
 static inline bool is_obj_type(value_t value, enum obj_type type) {
